@@ -5,8 +5,8 @@ set(SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/task/checksum.cpp)
 
 set(TESTS ${SOURCES}
-  ${CMAKE_CURRENT_SOURCE_DIR}/tests/result_tests.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/tests/checksum_tests.cpp)
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/cases/result.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/cases/checksum.cpp)
 
 #######################################################
 project(task CXX)
@@ -19,7 +19,9 @@ set_target_properties(task PROPERTIES
 #######################################################
 project(tests CXX)
 add_executable(tests ${CMAKE_CURRENT_SOURCE_DIR}/tests/main.cpp ${TESTS})
-target_include_directories(tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/task)
+target_include_directories(tests PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/task
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 set_target_properties(tests PROPERTIES
   CXX_STANDARD 17
   CXX_STANDARD_REQUIRED ON

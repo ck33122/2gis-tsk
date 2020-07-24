@@ -1,4 +1,4 @@
-#include "unit_test_framework.hpp"
+#include "test_framework.hpp"
 #include "result.hpp"
 
 struct TestNumInstancesCounter {
