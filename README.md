@@ -1,5 +1,7 @@
 # 2gis-tsk
 
+![build and run tests](https://github.com/ck33122/2gis-tsk/workflows/build%20and%20run%20tests/badge.svg?branch=master)
+
 тестовое задание для 2gis
 
 ## Условие
