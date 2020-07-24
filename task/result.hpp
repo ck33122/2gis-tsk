@@ -4,14 +4,16 @@
 #include <cstdlib>
 #include <memory>
 
-using Error = std::string_view;
+struct Error {
+  std::string_view reason;
+};
 
 template <typename TValue>
 class Result {
   bool error_happend;
   union {
     Error  error;
-    TValue result;
+    TValue value;
   };
 
 public:
@@ -19,23 +21,33 @@ public:
     : error_happend(true)
     , error(error) {}
 
-  Result(TValue&& result)
+  Result(TValue&& value)
     : error_happend(false)
-    , result(std::forward<TValue>(result)) {}
+    , value(std::forward<TValue>(value)) {}
 
   ~Result() {
     if (!error_happend) {
       if constexpr (!std::is_trivially_destructible_v<TValue>) {
-        result.~TValue();
+        value.~TValue();
       }
     }
   }
 
   bool    has_error() { return error_happend; }
   Error&  get_error() { return error_happend ? error : (error = Error{}); }
-  TValue& get_result() {
+  TValue& get_value() {
     if (!error_happend)
-      return result;
+      return value;
     abort();
   }
 };
+
+template <typename TValue>
+Result<TValue> make_result(TValue&& value) {
+  return Result<TValue>{std::forward<TValue>(value)};
+}
+
+template <typename TValue>
+Result<TValue> make_error(std::string_view reason) {
+  return Result<TValue>{Error{reason}};
+}

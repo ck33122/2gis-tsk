@@ -15,16 +15,16 @@ struct Test {
   const char*                 name;
 };
 
-#define TEST_CASE(test_name, ...)        \
-  struct test_name {                     \
-    test_name() {                        \
-      tests.push_back(                   \
-        {.functor = []() -> TestStatus { \
-           __VA_ARGS__;                  \
-           return TestStatus::Ok;        \
-         },                              \
-         .name = #test_name});           \
-    }                                    \
+#define TEST_CASE(test_name, ...) \
+  struct test_name {              \
+    test_name() {                 \
+      tests.push_back(            \
+        {[]() -> TestStatus {     \
+           __VA_ARGS__;           \
+           return TestStatus::Ok; \
+         },                       \
+         #test_name});            \
+    }                             \
   } static_init_##test_name;
 
 #define REQUIRE_(expression, line, file)                                                    \
