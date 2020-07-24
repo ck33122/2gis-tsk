@@ -27,13 +27,13 @@ struct Test {
     }                             \
   } static_init_##test_name;
 
-#define REQUIRE_(expression, line, file)                                                    \
-  if (!(expression)) {                                                                      \
-    std::cout << "requirement (" #expression ") failed on " << file << ":" << line << "\n"; \
-    return TestStatus::Failed;                                                              \
+#define REQUIRE_(line, file, ...)                                                            \
+  if (!(__VA_ARGS__)) {                                                                      \
+    std::cout << "requirement (" #__VA_ARGS__ ") failed on " << file << ":" << line << "\n"; \
+    return TestStatus::Failed;                                                               \
   }
 
-#define REQUIRE(expression) REQUIRE_(expression, __LINE__, __FILE__)
+#define REQUIRE(...) REQUIRE_(__LINE__, __FILE__, __VA_ARGS__)
 
 #ifndef TEST_MAIN
 extern std::vector<Test> tests;

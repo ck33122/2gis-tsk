@@ -43,11 +43,11 @@ public:
 };
 
 template <typename TValue>
-Result<TValue> make_result(TValue&& value) {
-  return Result<TValue>{std::forward<TValue>(value)};
+auto make_result(TValue&& value) {
+  return Result<std::remove_reference_t<TValue>>{std::forward<TValue>(value)};
 }
 
 template <typename TValue>
-Result<TValue> make_error(std::string_view reason) {
+auto make_error(std::string_view reason) {
   return Result<TValue>{Error{reason}};
 }

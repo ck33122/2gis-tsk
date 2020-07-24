@@ -1,10 +1,12 @@
 cmake_minimum_required(VERSION 3.1)
 
 set(SOURCES
-  # ${CMAKE_CURRENT_SOURCE_DIR}/src/ todo
-)
+  ${CMAKE_CURRENT_SOURCE_DIR}/task/count_words.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/task/checksum.cpp)
+
 set(TESTS ${SOURCES}
-  ${CMAKE_CURRENT_SOURCE_DIR}/tests/result_tests.cpp)
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/result_tests.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/checksum_tests.cpp)
 
 #######################################################
 project(task CXX)
