@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: prepare build
-        run: mkdir -p build && cd build && cmake ..
+        run: mkdir -p build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Release
       - name: make
         run: make
         working-directory: build
@@ -34,12 +34,12 @@ jobs:
         run: cmake ..
         working-directory: build
       - name: build
-        run: cmake --build .
+        run: cmake --build . --config Release
         working-directory: build
       - name: tests
         run: .\tests
-        working-directory: build/Debug
+        working-directory: build/Release
       - uses: actions/upload-artifact@v2
         with:
           name: task_windows
-          path: build/Debug/task.exe
+          path: build/Release/task.exe

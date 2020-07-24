@@ -40,3 +40,15 @@ TEST_CASE(result_should_not_call_destructor_on_value_if_not_exists, {
   auto result           = make_error<TestDestructorCallCounter>("error happend");
   REQUIRE(destructor_calls == 0);
 });
+
+TEST_CASE(result_value_availible, {
+  auto result = make_result(10);
+  REQUIRE(!result.has_error());
+  REQUIRE(result.get_value() == 10);
+});
+
+TEST_CASE(result_value_not_availible_if_error, {
+  auto result = make_error<int>("some error message");
+  REQUIRE(result.has_error());
+  REQUIRE(result.get_error().reason == std::string_view{"some error message"});
+});
