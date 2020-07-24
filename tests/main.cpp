@@ -1,3 +1,2 @@
-int main(int argc, char** argv) {
-  return 0;
-}
+#define TEST_MAIN
+#include "unit_test_framework.hpp"
