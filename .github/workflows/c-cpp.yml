@@ -1,21 +1,45 @@
-name: run tests
+name: build and run tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
-  build_and_run:
+  build_and_run_ubuntu:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: prepare build
-      run: mkdir -p build && cd build && cmake ..
-    - name: make
-      run: make
-      working-directory: build
-    - name: tests
-      run: ./tests
-      working-directory: build
+      - uses: actions/checkout@v2
+      - name: prepare build
+        run: mkdir -p build && cd build && cmake ..
+      - name: make
+        run: make
+        working-directory: build
+      - name: tests
+        run: ./tests
+        working-directory: build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: task_ubuntu
+          path: build/task
+
+  build_and_run_windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: prepare build folder
+        run: mkdir build
+      - name: prepare build
+        run: cmake ..
+        working-directory: build
+      - name: build
+        run: cmake --build .
+        working-directory: build
+      - name: tests
+        run: .\tests
+        working-directory: build/Debug
+      - uses: actions/upload-artifact@v2
+        with:
+          name: task_windows
+          path: build/Debug/task.exe
