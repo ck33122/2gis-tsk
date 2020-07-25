@@ -6,7 +6,8 @@ set(SOURCES
 
 set(TESTS ${SOURCES}
   ${CMAKE_CURRENT_SOURCE_DIR}/tests/cases/result.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/tests/cases/checksum.cpp)
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/cases/checksum.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/cases/count_words.cpp)
 
 #######################################################
 project(task CXX)

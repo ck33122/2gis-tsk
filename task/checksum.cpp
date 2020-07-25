@@ -41,5 +41,6 @@ Result<uint32_t> checksum(std::istream& input) {
   if (input.fail() && !fail_caused_by_smaller_input) {
     return make_error<uint32_t>("Logical error on i/o operation");
   }
+
   return make_result(std::move(result));
 }
