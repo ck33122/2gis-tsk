@@ -42,6 +42,23 @@ public:
   }
 };
 
+template <>
+class Result<void> {
+  bool  error_happend;
+  Error error;
+
+public:
+  Result()
+    : error_happend(false) {}
+
+  Result(Error error)
+    : error_happend(true)
+    , error(error) {}
+
+  bool   has_error() { return error_happend; }
+  Error& get_error() { return error_happend ? error : (error = Error{}); }
+};
+
 template <typename TValue>
 auto make_result(TValue&& value) {
   return Result<std::remove_reference_t<TValue>>{std::forward<TValue>(value)};

@@ -3,11 +3,12 @@
 #include <istream>
 
 class BufferOccurrences {
-  std::string_view target; // at least 1 symbol
+  std::string_view target;
   uint64_t         partial_occurrence = 0;
   uint64_t         count              = 0;
 
 public:
+  // remark: target shoud have at least 1 symbol
   inline BufferOccurrences(std::string_view target)
     : target(target) {}
 

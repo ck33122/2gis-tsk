@@ -40,10 +40,16 @@ TEST_CASE(count_words_returns_0_if_input_empty, {
 });
 
 TEST_CASE(count_words_returns_count_on_some_input, {
-  auto ss     = std::stringstream{};
+  auto ss = std::stringstream{};
   ss << "abcdabcbababadbacbabcafdbabab";
   auto result = count_words(ss, std::string_view{"ab"});
   REQUIRE(!result.has_error());
-  std::cout << result.get_value() << '\n';
   REQUIRE(result.get_value() == 7);
+});
+
+TEST_CASE(count_words_returns_error_on_empty_target, {
+  auto ss = std::stringstream{};
+  ss << "abcdabcbababadbacbabcafdbabab";
+  auto result = count_words(ss, std::string_view{""});
+  REQUIRE(result.has_error());
 });

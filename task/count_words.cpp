@@ -2,11 +2,8 @@
 #include <functional>
 #include <algorithm>
 
-// debug
-#include <iostream>
-
 template <typename T, typename TFunc>
-std::pair<T, T> min_max(T a, T b, TFunc&& criterion) {
+static std::pair<T, T> min_max(T a, T b, TFunc&& criterion) {
   auto a_by_criterion = criterion(a);
   auto b_by_criterion = criterion(b);
   if (a_by_criterion < b_by_criterion) {
@@ -54,10 +51,14 @@ void BufferOccurrences::read(std::string_view buffer) {
 }
 
 Result<uint64_t> count_words(std::istream& input, std::string_view target) {
+  if (target.size() == 0) {
+    return make_error<uint64_t>("bad argument: target shoud have at least 1 character");
+  }
+
   auto occ = BufferOccurrences{target};
   char buffer[4096];
 
-  while (input && !input.eof()) {
+  while (input.good() && !input.eof()) {
     input.read(buffer, sizeof(buffer));
     auto readed = input.gcount();
     if (readed) {

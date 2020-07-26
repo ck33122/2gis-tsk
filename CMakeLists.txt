@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 
 set(SOURCES
+  ${CMAKE_CURRENT_SOURCE_DIR}/task/arguments_parser.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/task/count_words.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/task/checksum.cpp)
 
