@@ -9,31 +9,15 @@ struct Arguments {
   std::string_view module, target, file;
 };
 
-static int run_module(const Arguments& args, std::ifstream& stream) {
-  if (args.module == "words") {
-    if (!args.target.size()) {
-      std::cout << "you shoud choose target. consider to use -h for help\n";
-      return 1;
-    }
-    auto result = count_words(stream, args.target);
-    if (result.has_error()) {
-      std::cout << result.get_error().reason << '\n';
-      return 1;
-    }
-    std::cout << result.get_value() << '\n';
-  } else if (args.module == "checksum") {
-    auto result = checksum(stream);
-    if (result.has_error()) {
-      std::cout << result.get_error().reason << '\n';
-      return 1;
-    }
-    std::cout << std::hex << result.get_value() << '\n';
-  } else {
-    std::cout << "you shoud choose module. consider to use -h for help\n";
-    return 1;
-  }
-  return 0;
-}
+class RaiiCloseStream {
+  std::ifstream& stream;
+
+public:
+  RaiiCloseStream(std::ifstream& stream)
+    : stream(stream) {}
+
+  ~RaiiCloseStream() { stream.close(); }
+};
 
 int main(int argc, char** argv) {
   Arguments args;
@@ -68,9 +52,32 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  auto stream        = std::ifstream(&args.file.front(), std::ifstream::in);
-  int  module_result = run_module(args, stream);
-  stream.close();
+  if (args.module == "words") {
+    if (!args.target.size()) {
+      std::cout << "you shoud choose target. consider to use -h for help\n";
+      return 1;
+    }
+    auto stream        = std::ifstream{&args.file.front(), std::ios::in};
+    auto stream_closer = RaiiCloseStream{stream};
+    auto result        = count_words(stream, args.target);
+    if (result.has_error()) {
+      std::cout << result.get_error().reason << '\n';
+      return 1;
+    }
+    std::cout << result.get_value() << '\n';
+  } else if (args.module == "checksum") {
+    auto stream        = std::ifstream{&args.file.front(), std::ios::in | std::ios::binary};
+    auto stream_closer = RaiiCloseStream{stream};
+    auto result        = checksum(stream);
+    if (result.has_error()) {
+      std::cout << result.get_error().reason << '\n';
+      return 1;
+    }
+    std::cout << std::hex << result.get_value() << '\n';
+  } else {
+    std::cout << "you shoud choose module. consider to use -h for help\n";
+    return 1;
+  }
 
-  return module_result;
+  return 0;
 }
