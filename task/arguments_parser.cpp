@@ -13,7 +13,6 @@ ArgumentsParser::ArgumentsParser() {
 }
 
 ArgumentsParser& ArgumentsParser::bind(char flag, bool& value) {
-  value = false;
   on_argument =
     [flag, &value, func = std::move(on_argument)](char input_flag) {
       if (input_flag == flag) {
@@ -26,7 +25,6 @@ ArgumentsParser& ArgumentsParser::bind(char flag, bool& value) {
 }
 
 ArgumentsParser& ArgumentsParser::bind(char flag, std::string_view& value) {
-  value = std::string_view{""};
   on_argument_with_value =
     [flag, &value, func = std::move(on_argument_with_value)](char input_flag, std::string_view input_value) {
       if (input_flag == flag) {
@@ -39,7 +37,7 @@ ArgumentsParser& ArgumentsParser::bind(char flag, std::string_view& value) {
 }
 
 Result<void> ArgumentsParser::parse(int argc, char** argv) {
-  for (uint32_t i = 1; i < argc; i += 2) {
+  for (auto i = 1; i < argc; i += 2) {
     Result<void> result;
     auto         flag_str = std::string_view{argv[i]};
 

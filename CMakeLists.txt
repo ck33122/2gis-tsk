@@ -2,13 +2,14 @@ cmake_minimum_required(VERSION 3.1)
 
 set(SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/task/arguments_parser.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/task/count_words.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/task/checksum.cpp)
 
 set(TESTS ${SOURCES}
-  ${CMAKE_CURRENT_SOURCE_DIR}/tests/cases/result.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/test_framework.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/tests/cases/checksum.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/tests/cases/count_words.cpp)
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/cases/circular_char_buffer.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/cases/count_words.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/tests/cases/result.cpp)
 
 #######################################################
 project(task CXX)
@@ -20,7 +21,7 @@ set_target_properties(task PROPERTIES
 
 #######################################################
 project(tests CXX)
-add_executable(tests ${CMAKE_CURRENT_SOURCE_DIR}/tests/main.cpp ${TESTS})
+add_executable(tests ${TESTS})
 target_include_directories(tests PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/task
   ${CMAKE_CURRENT_SOURCE_DIR}/tests)
