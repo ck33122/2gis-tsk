@@ -31,7 +31,7 @@
 
 ## Сборка и запуск
 
-Уже собраные бинарники для Ubuntu и Windows (x64) можно найти [тут](https://github.com/ck33122/2gis-tsk/releases).
+> Уже собраные бинарники для Ubuntu и Windows (x64) можно найти [тут](https://github.com/ck33122/2gis-tsk/releases).
 
 Для простоты приведу список команд для сборки в дебаг режиме:
 
