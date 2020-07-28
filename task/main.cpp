@@ -5,6 +5,7 @@
 #include "count_words_rabin_karp.hpp"
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 struct Arguments {
   bool             show_help = false;
@@ -95,8 +96,12 @@ int main(int argc, char** argv) {
       std::cout << result.get_error().reason << '\n';
       return 1;
     }
-    std::cout << std::hex << result.get_value() << '\n';
 
+    std::cout << std::setfill('0')
+              << std::setw(sizeof(uint32_t) * 2)
+              << std::right
+              << std::hex
+              << result.get_value() << '\n';
   } else {
     std::cout << "you shoud choose module. consider to use -h for help\n";
     return 1;
