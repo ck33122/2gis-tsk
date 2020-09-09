@@ -15,16 +15,6 @@ struct Arguments {
   std::string_view algorithm = std::string_view{"naive"};
 };
 
-class RaiiCloseStream {
-  std::ifstream& stream;
-
-public:
-  RaiiCloseStream(std::ifstream& stream)
-    : stream(stream) {}
-
-  ~RaiiCloseStream() { stream.close(); }
-};
-
 int main(int argc, char** argv) {
   Arguments args;
   auto      parse_result =
@@ -68,9 +58,8 @@ int main(int argc, char** argv) {
       return 1;
     }
 
-    auto stream        = std::ifstream{&args.file.front(), std::ios::in};
-    auto stream_closer = RaiiCloseStream{stream};
-    auto result        = make_result<size_t>(0);
+    auto stream = std::ifstream{&args.file.front(), std::ios::in};
+    auto result = make_result<size_t>(0);
 
     if (args.algorithm == "naive") {
       result = count_words<CountWordsInBufferNaive>(stream, args.target);
@@ -88,9 +77,8 @@ int main(int argc, char** argv) {
     std::cout << result.get_value() << '\n';
 
   } else if (args.module == "checksum") {
-    auto stream        = std::ifstream{&args.file.front(), std::ios::in | std::ios::binary};
-    auto stream_closer = RaiiCloseStream{stream};
-    auto result        = checksum(stream);
+    auto stream = std::ifstream{&args.file.front(), std::ios::in | std::ios::binary};
+    auto result = checksum(stream);
 
     if (result.has_error()) {
       std::cout << result.get_error().reason << '\n';
